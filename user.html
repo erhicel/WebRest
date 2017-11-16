@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+   $("#button").click(function(){
+    	$.get( 'http://localhost:8081/rest/users', function( data ) {
+/*    		$("#userId").text(data.userId);
+    		$("#upperName").text(data.upperName);
+    		$("#message").text(data.message);*/
+    		
+    		});
+   });    
+
+});
+
+</script>
+</head>
+<body>
+
+
+	<button id="button">Llamada rest</button>
+
+
+
+
+	<div id="data"></div>
+
+
+</body>
+</html>

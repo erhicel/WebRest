@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type = "text/javascript">
+$(document).ready(function(){
+	
+    function showData(data) {
+    	alert("ID" + data.id);
+    	$("#id").val(data.id);
+		$("#userId").val(data.userId);
+		$("#message").val(data.message);
+		$("#upperName").val(data.upperName);
+		alert("Los datos han sido mostrados");
+    }
+    
+    function toJSONString( form ) {
+		var obj = {};
+		var elements = form.elements;
+		for( var i = 0; i < elements.length; ++i ) {
+			var element = elements[i];
+			var name = element.name;
+			var value = element.value;
+
+			if( name ) {
+				obj[ name ] = value;
+			}
+		}
+		return JSON.stringify( obj );
+	};
+    
+    $("#post-btn").click(function(){ 
+    	var form = document.getElementById("reg-form");
+
+        $.ajax({
+                    url: "http://localhost:8081/rest/posts",
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: toJSONString( form ),
+                    success: function(result){
+                        alert("prueba " + result.message);
+                        showData(result);
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                    	alert("prueba de error");
+                        console.log( errorThrown );
+                    }
+        });
+});
+    
+    
+    
+    $("#search-btn").click(function(){
+    	$.get( 'http://localhost:8081/rest/posts/' + $("#searchId").val(), function( data ) {
+    		$("#id").val(data.id);
+    		$("#userId").val(data.userId);
+    		$("#upperName").val(data.upperName);
+    		$("#message").val(data.message);
+    		
+    		});
+    });
+    
+    $("#edit-btn").click(function(){ 
+    	var form = document.getElementById("reg-form");
+
+        $.ajax({
+                    url: "http://localhost:8081/rest/posts",
+                    dataType: 'json',
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: toJSONString( form ),
+                    success: function(result){
+                        alert("prueba " + result.message);
+                        showData(result);
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                    	alert("prueba de error" + toJSONString( form ));
+                        console.log( errorThrown );
+                    }
+        });
+});
+    
+    $("#delete-btn").click(function(){ 
+    	var form = document.getElementById("reg-form");
+
+        $.ajax({
+                    url: "http://localhost:8081/rest/posts/" + $("#searchId").val(),
+                    dataType: 'json',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: toJSONString( form ),
+                    success: function(result){
+                        alert("prueba " + result);
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                    	alert("prueba de error" + toJSONString( form ));
+                        console.log( errorThrown );
+                    }
+        });
+});
+    
+    
+
+});
+
+</script>
+</head>
+<body>
+
+
+	<button id="post-btn">Crear formulario</button>
+	<button id="search-btn">Buscar post</button>
+	<button id="edit-btn">Guardar post</button>
+	<button id="delete-btn">Eliminar post</button>
+
+
+	<form id="reg-form">
+		<input type="text" name="id" id="id" disabled>
+		<input type="text" name="userId" id="userId"> 
+		<input type="text" name="message" id="message"> 
+		<input type="text" name="upperName" id="upperName">
+	</form>
+	
+	<!-- /posts/{number} -->
+	<form id="search-form">
+		<input type="text" name="id" id="searchId">
+	</form>
+
+
+</body>
+</html>

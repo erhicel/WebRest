@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+   $("#button").click(function(){
+    	$.get( 'http://localhost:8081/rest/post/1', function( data ) {
+    		$("#userId").text(data.userId);
+    		$("#upperName").text(data.upperName);
+    		$("#message").text(data.message);
+    		
+    		});
+    });
+
+    $("#listDB").click(function(){
+    	$.get( 'http://localhost:8081/rest/posts', function( data ) {
+    var $data = $('#data');
+    data.forEach(function(item) {
+        var $ul = $('<ul></ul>');
+        for (var field in item) {
+          $ul.append(`<li>${field}: ${item[field]}</li>`)
+        }
+        $data.append($ul);
+ 
+    });
+    });
+        });
+    
+    $("#listExternal").click(function(){
+    	$.get( 'http://localhost:8081/rest/postsexternal', function( data ) {
+    var $data = $('#data');
+    data.forEach(function(item) {
+        var $ul = $('<ul></ul>');
+        for (var field in item) {
+          $ul.append(`<li>${field}: ${item[field]}</li>`)
+        }
+        $data.append($ul);
+ 
+    });
+    });
+        });
+    
+    function showData(data) {
+		$("userId").text = data.userId;
+		$("message").text = data.message;
+		$("upperName").text = data.upperName;
+		alert("Los datos han sido mostrados");
+    }
+    
+    function toJSONString( form ) {
+		var obj = {};
+		var elements = form.elements;
+		alert(elements);
+		for( var i = 0; i < elements.length; ++i ) {
+			var element = elements[i];
+			var name = element.name;
+			var value = element.value;
+
+			if( name ) {
+				obj[ name ] = value;
+			}
+		}
+
+		return JSON.stringify( obj );
+	};
+    
+
+});
+
+</script>
+</head>
+<body>
+
+
+	<button id="button">Llamada rest</button>
+	<button id="listExternal">Lista de posts API externa</button>
+	<button id="listDB">Lista de posts de base de datos</button>
+
+
+
+	<div id="data"></div>
+
+
+</body>
+</html>
